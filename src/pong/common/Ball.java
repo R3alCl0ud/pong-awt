@@ -94,7 +94,7 @@ public class Ball extends Component {
 
 	@Override
 	public void paint(Graphics g) {
-		g.setColor(Color.LIGHT_GRAY);
+		g.setColor(Color.WHITE);
 		g.fillOval(getPosX(), getPosY() - 10, 20, 20);
 	}
 

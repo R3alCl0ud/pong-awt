@@ -3,11 +3,11 @@ package pong.common;
 import javax.swing.JFrame;
 
 public class Main {
-
+	
 	public static JFrame window;
 	private static Thread drawing;
 	private static final long frameTime = 17l;
-
+	
 	public static void main(String... args) {
 		window = new JFrame("Pong!");
 		window.setSize(800, 600);
@@ -15,13 +15,10 @@ public class Main {
 		window.setVisible(true);
 		GameBoard panel = new GameBoard();
 		window.add(panel);
-		window.addKeyListener(panel.p1);
-		window.addKeyListener(panel.p2);
 		window.validate();
-		// window.setAlwaysOnTop(true);
 		window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		drawing = new Thread("uwa!! Frames!!") {
-
+			
 			public void run() {
 				while (!drawing.isInterrupted()) {
 					panel.update(17l);

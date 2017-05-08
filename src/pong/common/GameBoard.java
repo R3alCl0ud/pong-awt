@@ -12,17 +12,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements ActionListener {
-
+	
 	public class StartBTN extends JButton {
-
+		
 		private static final long serialVersionUID = 1L;
-
+		
 		public StartBTN() {
 			super("Start!");
 			this.setLocation((800 - 60) / 2, (600 - 30) / 2);
 			this.setActionCommand("START");
 		}
-
+		
 		public void paintComponents(Graphics g) {
 			this.setLocation((800 - 60) / 2, (600 - 30) / 2);
 			// if (this.isVisible()) {
@@ -33,6 +33,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			// }
 		}
 	}
+	
 	private static final long serialVersionUID = 3718337806421213371L;
 	private int scoreP1, scoreP2, round, win = 1;
 	private Ball ball;
@@ -40,7 +41,7 @@ public class GameBoard extends JPanel implements ActionListener {
 	public Paddle p1, p2;
 	// private JFrame frame;
 	public JButton start;
-
+	
 	public GameBoard() {
 		super();
 		// frame = parent;
@@ -65,12 +66,12 @@ public class GameBoard extends JPanel implements ActionListener {
 		add(s2);
 		add(ball);
 		add(start);
-		setBackground(new Color(0x616161));
+		setBackground(new Color(0x16161b));
 		addKeyListener(p1);
 		addKeyListener(p2);
 		this.setFocusable(true);
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("START")) {
@@ -81,18 +82,19 @@ public class GameBoard extends JPanel implements ActionListener {
 			rl.setText("Round: " + round);
 		}
 	}
-
+	
 	@Override
 	public void paintComponent(Graphics g) {
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, 0, 800, 30);
-		g.setColor(new Color(0x940000));
-		g.fillRect(0, 30, 30, 540);
-		g.fillRect(770, 30, 30, 540);
-		g.setColor(Color.DARK_GRAY);
-		g.fillRect(0, 550, 800, 30);
-		g.setColor(new Color(0x60b0b0));
-		g.fillRect(30, 30, 740, 520);
+		g.setColor(new Color(0x16161b));
+		g.fillRect(0, 0, 800, 600);
+		// g.setColor(new Color(0x940000));
+		// g.fillRect(0, 30, 30, 540);
+		// g.fillRect(770, 30, 30, 540);
+		// g.setColor(Color.DARK_GRAY);
+		// g.fillRect(0, 0, 800, 30);
+		// g.fillRect(0, 540, 800, 30);
+		// g.setColor(new Color(0x16161b));
+		// g.fillRect(30, 30, 740, 510);
 		ball.paint(g);
 		p1.paint(g);
 		p2.paint(g);
@@ -103,7 +105,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		Rectangle2D rd = fm.getStringBounds("Round: " + round, rl.getGraphics());
 		rl.setLocation((int) (800 - rd.getWidth()) / 2, 10);
 	}
-
+	
 	public boolean resetBall() {
 		if (ball.getPosX() <= 50 && ball.getVelX() < 0d) {
 			if (ball.getPosY() >= p1.getPosY() && ball.getPosY() <= (p1.getPosY() + 80)) {
@@ -124,7 +126,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 		return false;
 	}
-
+	
 	public void update(long time) {
 		p1.update();
 		p2.update();
