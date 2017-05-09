@@ -1,9 +1,12 @@
 package pong.common;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.FontMetrics;
+import java.awt.GradientPaint;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,42 +15,49 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements ActionListener {
-	
+
+	private static final Color light_blue = new Color(0x59A9FF), blurple = new Color(0x6435C8);
+
 	public class StartBTN extends JButton {
-		
+
 		private static final long serialVersionUID = 1L;
-		
+
 		public StartBTN() {
 			super("Start!");
-			this.setLocation((800 - 60) / 2, (600 - 30) / 2);
+			this.setLocation((800 - 120) / 2, (600 - 40) / 2);
 			this.setActionCommand("START");
 			this.setBounds((800 - 120) / 2, (600 - 40) / 2, 120, 40);
+			this.setSize(new Dimension(120, 40));
+			this.setMinimumSize(new Dimension(120, 40));
+			this.setPreferredSize(new Dimension(120, 40));
 		}
-		
+
 		@Override
 		public void paint(Graphics g) {
 			return;
 		}
-		
+
 		public void paintComponents(Graphics g) {
-			this.setLocation((800 - 60) / 2, (600 - 30) / 2);
+			this.setLocation((800 - 120) / 2, (600 - 40) / 2);
 			if (this.isVisible()) {
-				g.setColor(new Color(0x59a9ff));
-				g.fillRoundRect((800 - 120) / 2, (600 - 40) / 2, 120, 40, 30, 50);
+				GradientPaint stbtn = new GradientPaint((800 - 120) / 2, (600 - 40) / 2, light_blue, ((800 - 120) / 2) + 120, ((600 - 40) / 2) + 40, blurple);
+				Graphics2D g2d = (Graphics2D) g;
+				g2d.setPaint(stbtn);
+				g2d.fillRoundRect((800 - 120) / 2, (600 - 40) / 2, 120, 40, 30, 50);
 				g.setColor(Color.WHITE);
 				g.setFont(new Font("Gilroy-Light", 0, 20));
 				g.drawString("Start Game!", (800 - 114) / 2, (600 + 15) / 2);
 			}
 		}
 	}
-	
+
 	private static final long serialVersionUID = 3718337806421213371L;
 	private int scoreP1, scoreP2, round, win = 1;
 	private Ball ball;
 	private JLabel rl;
 	public Paddle p1, p2;
 	public JButton start;
-	
+
 	public GameBoard() {
 		super();
 		// frame = parent;
@@ -71,7 +81,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		addKeyListener(p2);
 		setFocusable(true);
 	}
-	
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("START")) {
@@ -82,7 +92,7 @@ public class GameBoard extends JPanel implements ActionListener {
 			rl.setText("Round " + round);
 		}
 	}
-	
+
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(new Color(0x16161b));
@@ -92,7 +102,8 @@ public class GameBoard extends JPanel implements ActionListener {
 		p2.paint(g);
 		start.paintComponents(g);
 		FontMetrics fm = rl.getFontMetrics(rl.getFont());
-		// Rectangle2D rd = fm.getStringBounds("Round " + round, rl.getGraphics());
+		// Rectangle2D rd = fm.getStringBounds("Round " + round,
+		// rl.getGraphics());
 		rl.setFont(new Font("Gilroy-Light", 0, 24));
 		rl.setForeground(new Color(0x8a8a8d));
 		rl.setLocation((int) (800 - fm.stringWidth("Round " + round)) / 2, 75);
@@ -106,7 +117,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		g.drawString(String.format("%02d", scoreP1), (int) ((800 - (130 + sm.stringWidth(String.format("%02d", scoreP1)))) / 2), 60);
 		g.drawString(String.format("%02d", scoreP2), (int) (800 + 50) / 2, 60);
 	}
-	
+
 	public boolean resetBall() {
 		if (ball.getPosX() <= 50 && ball.getVelX() < 0d) {
 			if (ball.getPosY() >= p1.getPosY() && ball.getPosY() <= (p1.getPosY() + 80)) {
@@ -127,7 +138,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 		return false;
 	}
-	
+
 	public void update(long time) {
 		p1.update();
 		p2.update();
