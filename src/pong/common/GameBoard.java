@@ -1,47 +1,56 @@
 package pong.common;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.geom.Rectangle2D;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GameBoard extends JPanel implements ActionListener {
-
+	
 	public class StartBTN extends JButton {
-
+		
 		private static final long serialVersionUID = 1L;
-
+		
 		public StartBTN() {
 			super("Start!");
 			this.setLocation((800 - 60) / 2, (600 - 30) / 2);
 			this.setActionCommand("START");
+			this.setBounds((800 - 120) / 2, (600 - 40) / 2, 120, 40);
 		}
-
-		public void paintComponents(Graphics g) {
-			this.setLocation((800 - 60) / 2, (600 - 30) / 2);
+		
+		public void paint(Graphics g) {
 			// if (this.isVisible()) {
-			// g.setColor(new Color(0x337ab7));
-			// g.fillRect((800 - 60) / 2, (600 - 30) / 2, 60, 30);
+			// g.setColor(new Color(0x59a9ff));
+			// g.fillRoundRect((800 - 60) / 2, (600 - 30) / 2, 60, 30, 5, 5);
 			// g.setColor(Color.WHITE);
 			// g.drawString("Start!", (800 - 32) / 2, (600 + 10) / 2);
 			// }
 		}
+		
+		public void paintComponents(Graphics g) {
+			this.setLocation((800 - 60) / 2, (600 - 30) / 2);
+			if (this.isVisible()) {
+				g.setColor(new Color(0x59a9ff));
+				g.fillRoundRect((800 - 120) / 2, (600 - 40) / 2, 120, 40, 30, 50);
+				g.setColor(Color.WHITE);
+				g.drawString("Start Game!", (800 - 64) / 2, (600 + 10) / 2);
+			}
+		}
 	}
-
+	
 	private static final long serialVersionUID = 3718337806421213371L;
 	private int scoreP1, scoreP2, round, win = 1;
 	private Ball ball;
 	private JLabel rl;
 	public Paddle p1, p2;
-	// private JFrame frame;
 	public JButton start;
-
+	
 	public GameBoard() {
 		super();
 		// frame = parent;
@@ -50,20 +59,14 @@ public class GameBoard extends JPanel implements ActionListener {
 		ball = new Ball((800 - 20) / 2, (600 - 20) / 2);
 		p1 = new Paddle(1);
 		p2 = new Paddle(2);
-		// s1 = new JLabel("" + scoreP1);
-		// s2 = new JLabel("" + scoreP2);
-		rl = new JLabel("Round: " + round);
-		// s1.setForeground(new Color(0xFFFFFF));
-		// s2.setForeground(new Color(0xFFFFFF));
+		rl = new JLabel("Round " + round);
 		rl.setForeground(new Color(0xFFFFFF));
 		start = new StartBTN();
 		start.setText("Start!");
 		start.addActionListener(this);
 		add(p1);
 		add(p2);
-		// add(s1);
 		add(rl);
-		// add(s2);
 		add(ball);
 		add(start);
 		setBackground(new Color(0x16161b));
@@ -71,7 +74,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		addKeyListener(p2);
 		setFocusable(true);
 	}
-
+	
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("START")) {
@@ -79,10 +82,10 @@ public class GameBoard extends JPanel implements ActionListener {
 			ball.setVelX(200d * win);
 			ball.setVelY(100d);
 			round++;
-			rl.setText("Round: " + round);
+			rl.setText("Round " + round);
 		}
 	}
-
+	
 	@Override
 	public void paintComponent(Graphics g) {
 		g.setColor(new Color(0x16161b));
@@ -91,13 +94,22 @@ public class GameBoard extends JPanel implements ActionListener {
 		p1.paint(g);
 		p2.paint(g);
 		start.paintComponents(g);
-		// s1.setLocation(10, 10);
-		// s2.setLocation(800 - 20, 10);
 		FontMetrics fm = rl.getFontMetrics(rl.getFont());
-		Rectangle2D rd = fm.getStringBounds("Round: " + round, rl.getGraphics());
-		rl.setLocation((int) (800 - rd.getWidth()) / 2, 10);
+		// Rectangle2D rd = fm.getStringBounds("Round " + round, rl.getGraphics());
+		rl.setFont(new Font("Gilroy-Light", 0, 24));
+		rl.setForeground(new Color(0x8a8a8d));
+		rl.setLocation((int) (800 - fm.stringWidth("Round " + round)) / 2, 75);
+		g.setColor(new Color(0x8a8a8d));
+		g.setFont(new Font("Gilroy-Light", 0, 48));
+		FontMetrics sm = getFontMetrics(g.getFont());
+		g.drawString(":", (800 - sm.stringWidth(":")) / 2, 50);
+		g.setColor(Color.LIGHT_GRAY);
+		g.setFont(new Font("Verdana", 0, 64));
+		sm = getFontMetrics(g.getFont());
+		g.drawString(String.format("%02d", scoreP1), (int) ((800 - (130 + sm.stringWidth(String.format("%02d", scoreP1)))) / 2), 60);
+		g.drawString(String.format("%02d", scoreP1), (int) (800 + 50) / 2, 60);
 	}
-
+	
 	public boolean resetBall() {
 		if (ball.getPosX() <= 50 && ball.getVelX() < 0d) {
 			if (ball.getPosY() >= p1.getPosY() && ball.getPosY() <= (p1.getPosY() + 80)) {
@@ -118,14 +130,12 @@ public class GameBoard extends JPanel implements ActionListener {
 		}
 		return false;
 	}
-
+	
 	public void update(long time) {
 		p1.update();
 		p2.update();
 		ball.updatePosition(time);
 		if (resetBall()) {
-			// s1.setText("" + scoreP1);
-			// s2.setText("" + scoreP2);
 			ball.reset();
 			p1.reset();
 			p2.reset();
