@@ -24,13 +24,9 @@ public class GameBoard extends JPanel implements ActionListener {
 			this.setBounds((800 - 120) / 2, (600 - 40) / 2, 120, 40);
 		}
 		
+		@Override
 		public void paint(Graphics g) {
-			// if (this.isVisible()) {
-			// g.setColor(new Color(0x59a9ff));
-			// g.fillRoundRect((800 - 60) / 2, (600 - 30) / 2, 60, 30, 5, 5);
-			// g.setColor(Color.WHITE);
-			// g.drawString("Start!", (800 - 32) / 2, (600 + 10) / 2);
-			// }
+			return;
 		}
 		
 		public void paintComponents(Graphics g) {
@@ -39,7 +35,8 @@ public class GameBoard extends JPanel implements ActionListener {
 				g.setColor(new Color(0x59a9ff));
 				g.fillRoundRect((800 - 120) / 2, (600 - 40) / 2, 120, 40, 30, 50);
 				g.setColor(Color.WHITE);
-				g.drawString("Start Game!", (800 - 64) / 2, (600 + 10) / 2);
+				g.setFont(new Font("Gilroy-Light", 0, 20));
+				g.drawString("Start Game!", (800 - 114) / 2, (600 + 15) / 2);
 			}
 		}
 	}
@@ -107,7 +104,7 @@ public class GameBoard extends JPanel implements ActionListener {
 		g.setFont(new Font("Verdana", 0, 64));
 		sm = getFontMetrics(g.getFont());
 		g.drawString(String.format("%02d", scoreP1), (int) ((800 - (130 + sm.stringWidth(String.format("%02d", scoreP1)))) / 2), 60);
-		g.drawString(String.format("%02d", scoreP1), (int) (800 + 50) / 2, 60);
+		g.drawString(String.format("%02d", scoreP2), (int) (800 + 50) / 2, 60);
 	}
 	
 	public boolean resetBall() {
